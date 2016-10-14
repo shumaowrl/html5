@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head>  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+<title>弹出窗</title>  
+<style>  
+	body{margin:0px;padding:0px}  
+	p {margin:0; padding:20px; text-align: center;}
+	#hd, #ft {padding:20px 3px; background-color: #cccccc; text-align: center;}
+	.bd-lft {margin:10px 0; min-width:400px;}
+	.main {background-color: #03a9f4; color:#ffffff; min-height:800px;}
+	.aside {background-color: #00bcd4; color:#ffffff; min-height:800px;}
+	
+	/* 左侧栏固定宽度，右侧自适应 */
+	.bd-lft {
+	    zoom:1;
+	    overflow:hidden;
+	    padding-left:210px;
+	}
+	.bd-lft .aside {
+	    float:left;
+	    width:200px;
+	    margin-left:-100%; /*= -100%*/
+	    position:relative;
+	    left:-210px; /* = -parantNode.paddingLeft */
+	    _left: 0; /*IE6 hack*/
+	}
+	.bd-lft .main {
+	    float:left;
+	    width:100%;
+	}
+	.bgCorver {
+	    background-color: black;
+	    display: none;
+	    height: 100%;
+	    left: 0;
+	    opacity: 0.5;
+	    position: absolute;
+	    top: 0;
+	    width: 100%;
+	    z-index: 99;
+	}
+	
+	#div1{background:#FFCCCC;color: #FFF; display:none;position:absolute;}  
+	#div2{background:#FFFF99;color: #000;width:400px;display:none; position:absolute;}  
+	#div3{background:#FFFF99;color: #000;width:400px;display:none;}
+	#div4{background:#FFFF99;color: #000;width:400px;display:none;}
+</style>  
+<Script type="text/javascript" src="http://jt.875.cn/js/jquery.js"></script>  
+
+</head>  
+<body>  
+    <div class="bgCorver" style="display:none;"></div>
+    <div>
+        <div id="hd">头部</div>
+	    <div class="bd-lft">
+	        <div class="main">
+	            <p>主内容栏自适应宽度</p>
+	            <div style="min-height:400px;"></div>
+	            <div id="main1" style="position:relative;min-height:400px;background:#99CC99;">
+	                <p>我是当前窗口啊我是当前窗口啊我是当前窗口啊我是当前窗口啊我是当前窗口啊我是当前窗口啊</p>
+	                <p>父窗口是【position:relative】，弹出窗口是【position:absolute】，并且弹出窗式父窗div内。</p>
+	                <div id="div1" class="dlg">我是弹出窗口1111啊<br>我是弹出窗口1111啊<br>我是弹出窗口1111啊<br>我是弹出窗口1111啊<br>我是弹出窗口1111啊<br>我是弹出窗口1111啊<br>我是弹出窗口1111啊</div>  
+	                <div id="div2" class="dlg">我是弹出窗口2222啊<br>我是弹出窗口2222啊<br>我是弹出窗口2222啊<br>我是弹出窗口2222啊<br>我是弹出窗口2222啊</div>  
+	            </div>
+	            
+	        </div>
+	        
+	
+	        <div class="aside">
+	            <p>侧边栏固定宽度</p>
+	        </div>
+	    </div>
+	    <div id="ft">底部</div>
+    </div>
+
+	<div id="test">  
+		<input class="btn1" type="button" value="当前窗口垂直居中1"/>
+		<input class="btn2" type="button" value="当前窗口垂直居中2"/>
+		<input class="btn3" type="button" value="浏览器窗口垂直居中-固定"/>
+		<input class="btn4" type="button" value="浏览器窗口垂直居中-跟随滚动"/>
+		<input class="close" type="button" value="关闭" onclick="closePop()"/>
+	</div>  
+	<div id="div3" class="dlg">我是弹出窗口3333啊<br>我是弹出窗口3333啊<br>我是弹出窗口3333啊<br>我是弹出窗口3333啊<br>我是弹出窗口3333啊<input class="close" type="button" value="关闭" onclick="closePop()"/></div>
+    <div id="div4" class="dlg">我是弹出窗口4444啊<br>我是弹出窗口4444啊<br>我是弹出窗口4444啊<br>我是弹出窗口4444啊<br>我是弹出窗口4444啊<input class="close" type="button" value="关闭" onclick="closePop()"/></div>
+	
+</body>
+<Script type="text/javascript">
+//浏览器窗口垂直居中-不滚动
+function popupW1(popupName){  
+    var _scrollHeight = $(document).scrollTop(),//获取当前窗口距离页面顶部高度  
+    _windowHeight = $(window).height(),//获取当前窗口高度  
+    _windowWidth = $(window).width(),//获取当前窗口宽度  
+    _popupHeight = popupName.height(),//获取弹出层高度  
+    _popupWeight = popupName.width();//获取弹出层宽度  
+    _posiTop = (_windowHeight - _popupHeight)/2;  
+    _posiLeft = (_windowWidth - _popupWeight)/2;  
+    popupName.css({"left": _posiLeft + "px", "top":_posiTop + "px", "display":"block", "position": "fixed", "z-index": "100"});//设置position 
+    $('.bgCorver').css({"display":"block", "height":$('body').height()});
+}
+//浏览器窗口垂直居中-可滚动
+function popupW2(popupName){  
+    var _scrollHeight = $(document).scrollTop(),//获取当前窗口距离页面顶部高度  
+    _windowHeight = $(window).height(),//获取当前窗口高度  
+    _windowWidth = $(window).width(),//获取当前窗口宽度  
+    _popupHeight = popupName.height(),//获取弹出层高度  
+    _popupWeight = popupName.width();//获取弹出层宽度  
+    _posiTop = (_windowHeight - _popupHeight)/2 + _scrollHeight;  
+    _posiLeft = (_windowWidth - _popupWeight)/2;  
+    popupName.css({"left": _posiLeft + "px", "top":_posiTop + "px", "display":"block", "z-index": "100", "position": "absolute"});//设置position
+    $('.bgCorver').css({"display":"block", "height":$('body').height()});
+}
+
+//当前窗口垂直居中  
+function popup(popupName){    
+    _windowHeight = $("#main1").height(),//获取当前窗口高度  
+    _windowWidth = $("#main1").width(),//获取当前窗口宽度  
+    _popupHeight = popupName.height(),//获取弹出层高度  
+    _popupWeight = popupName.width();//获取弹出层宽度  
+    console.log(_popupHeight);
+    console.log(_popupWeight);
+    _posiTop = (_windowHeight - _popupHeight)/2;  
+    _posiLeft = (_windowWidth - _popupWeight)/2;  
+    popupName.css({"left": _posiLeft + "px","top":_posiTop + "px","display":"block"});//设置position  
+}  
+$(function(){  
+    $(".btn1").click(function(){  
+        popup($("#div1"));  
+    });  
+    $(".btn2").click(function(){  
+        popup($("#div2"));  
+    });
+    $(".btn3").click(function(){  
+    	popupW1($("#div3"));  
+    });
+    $(".btn4").click(function(){  
+        popupW2($("#div4"));  
+    });
+});  
+  
+$(window).resize(function(){
+	if($("#div1").is(":visible")){
+		popup($("#div1"));
+	}
+	if($("#div2").is(":visible")){
+        popup($("#div1"));
+    }
+});
+//关闭弹出
+function closePop(){
+    $('.dlg').css({"display":"none"});//设置position
+    $('.bgCorver').css({"display":"none"});
+}
+</script>  
+</html>  
